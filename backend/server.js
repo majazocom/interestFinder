@@ -87,6 +87,16 @@ app.post('/addinterest', async (request, response) => {
     response.json(responseObject);
 });
 //hitta matchande intressen
+app.post('/findmatch', async (request, response) => {
+    const userInterestObject = request.body;
+    const matches = await interestsDB.find(
+        {
+            interests: userInterestObject.interest,
+            $not: { user: userInterestObject.user }
+        }
+    );
+    response.json(matches);
+})
 
 //starta servern
 app.listen(1234, () => {
