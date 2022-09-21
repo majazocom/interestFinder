@@ -54,7 +54,11 @@ app.post('/login', async (request, response) => {
         console.log('korrekt lösen ', account[0]);
         responseObject.user = account[0].username;
         //vi vill kolla om användaren har intressen
+        const interestsRecord = await interestsDB.find({user: account[0].username});
         //om det finns; skicka med i responseobj
+        if (interestsRecord.length > 0) {
+            responseObject.interests = interestsRecord[0].interests;
+        }
     } else {
         responseObject.success = false;
     }
@@ -96,9 +100,10 @@ app.post('/findmatch', async (request, response) => {
         }
     );
     response.json(matches);
-})
+});
+
 
 //starta servern
 app.listen(1234, () => {
     console.log('Server is running on port 1234');
-})
+});
