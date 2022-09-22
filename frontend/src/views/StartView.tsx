@@ -34,6 +34,10 @@ export default function StartView() {
     });
     const data = await response.json();
     console.log(data);
+    let interests = JSON.parse(localStorage.getItem('interests') || '');
+    interests.push(newInterest);
+    localStorage.setItem('interests', JSON.stringify(interests));
+    setInterests(interests);
   };
 
   async function findMatch(interest: string) {
@@ -72,7 +76,7 @@ export default function StartView() {
       </section>
       <section>
         {interests ? interests.map((item, i) => <button key={i} onClick={() => findMatch(item)}>{item}</button>) : null}
-        {matches ? matches.map((match, i) => <MatchContainer user={match.user} interests={match.interests} /> ) : null}
+        {matches ? matches.map((match, i) => <MatchContainer key={i} user={match.user} interests={match.interests} /> ) : null}
       </section>
     </div>
   )
